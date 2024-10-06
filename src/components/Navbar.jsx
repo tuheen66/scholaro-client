@@ -2,6 +2,8 @@ import { useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { AuthContext } from "../providers/AuthProvider";
 
+import logo from '../assets/images/logo.png'
+
 const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
 
@@ -66,9 +68,9 @@ const Navbar = () => {
           Admission
         </NavLink>
       </li>
-      <li>
+      {/* <li>
         <NavLink
-          to="/my-college"
+          to="/my-college/:collegeName"
           style={({ isActive, isTransitioning }) => {
             return {
               fontWeight: isActive ? "600" : "",
@@ -82,7 +84,7 @@ const Navbar = () => {
         >
           My College
         </NavLink>
-      </li>
+      </li> */}
     </>
   );
 
@@ -114,7 +116,9 @@ const Navbar = () => {
               {navItems}
             </ul>
           </div>
-          <a className="btn btn-ghost text-xl">Scholaro</a>
+          <Link to="/">
+          <img className="w-24 pl-4" src={logo} alt="" />
+          </Link>
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1 gap-4">{navItems}</ul>
@@ -123,12 +127,14 @@ const Navbar = () => {
         <div className="navbar-end">
           {user ? (
             <>
-              <div className="flex items-center gap-2">
+              <div className="md:flex space-y-2 items-center gap-2">
+                <Link to={`/student-profile/${user?.email}`}>
                 <p>{user.displayName}</p>
+                </Link>
                 <img className="w-14 rounded-full" src={user.photoURL} alt="" />
                 <button
                 onClick={handleLogOut}
-                className="btn px-6 bg-[#d35400] text-white border-none  hover:text-blue-500 hover:bg-orange-400">
+                className="btn btn-sm md:btn-md px-6 bg-[#d35400] text-white border-none  hover:text-blue-500 hover:bg-orange-400">
                   Log Out
                 </button>
               </div>
@@ -137,7 +143,7 @@ const Navbar = () => {
             <>
               <div>
                 <Link to={"/login"}>
-                  <button className="btn w-full px-6 bg-[#d35400] text-white border-none  hover:text-blue-500 hover:bg-orange-400">
+                  <button className="btn w-full px-6 bg-[#d35400] text-white border-none   hover:bg-blue-600">
                     Sign In
                   </button>
                 </Link>

@@ -15,11 +15,15 @@ import AuthProvider from "./providers/AuthProvider";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import CollegeDetails from "./Pages/CollegeDetails/CollegeDetails";
+import PrivateRoute from "./Routes/PrivateRoute";
+import StudentProfile from "./Pages/StudentProfile/StudentProfile";
+import ErrorPage from "./Pages/ErrorPage/ErrorPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Main></Main>,
+    errorElement:<ErrorPage></ErrorPage>,
     children: [
       {
         path: "/",
@@ -31,16 +35,37 @@ const router = createBrowserRouter([
       },
       {
         path: "/college-details/:id",
-        element: <CollegeDetails></CollegeDetails>,
-        loader:({params})=>fetch(`http://localhost:5000/college/${params.id}`)
+        element: (
+          <PrivateRoute>
+            <CollegeDetails></CollegeDetails>
+          </PrivateRoute>
+        ),
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/college/${params.id}`),
       },
       {
         path: "/admission",
         element: <Admission></Admission>,
       },
       {
-        path: "/my-college",
-        element: <MyCollege></MyCollege>,
+        path: "/my-college/:collegeName",
+        element: (
+          <PrivateRoute>
+            <MyCollege></MyCollege>
+          </PrivateRoute>
+        ),
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/my-college/${params.collegeName}`),
+      },
+      {
+        path: "/student-profile/:email",
+        element: (
+          <PrivateRoute>
+            <StudentProfile></StudentProfile>
+          </PrivateRoute>
+        ),
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/colleges/${params.email}`),
       },
       {
         path: "/login",

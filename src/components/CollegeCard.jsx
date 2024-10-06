@@ -1,7 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { Rating } from "@smastrom/react-rating";
+
+import "@smastrom/react-rating/style.css";
 
 const CollegeCard = ({ college }) => {
+
+
+
+
+
+  
   return (
     <div>
       <div className=" flex flex-col flex-grow card bg-blue-200  shadow-xl shadow-slate-600 h-[550px]">
@@ -11,9 +20,10 @@ const CollegeCard = ({ college }) => {
         <div className=" flex-grow space-y-4 p-4 ">
           <h2 className="card-title">{college.name}</h2>
 
-          <p>
-            <span className="font-semibold">Rating :</span> {college.rating}{" "}
-          </p>
+          <p className="flex items-center">
+                  <span className="font-semibold">Rating :</span>
+                  <Rating style={{ maxWidth: 150 }} value={college.rating} readOnly />
+                </p>
           <p>
             <span className="font-semibold">Admission start : </span>
             {college.admission_dates.start}{" "}

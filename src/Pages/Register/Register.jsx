@@ -5,6 +5,7 @@ import { AuthContext } from "../../providers/AuthProvider";
 import { updateProfile } from "firebase/auth";
 import GithubSignIn from "../../components/GithubSignIn";
 
+
 const Register = () => {
   const { createUser } = useContext(AuthContext);
 
@@ -25,6 +26,7 @@ const Register = () => {
           displayName: name,
           photoURL: photo,
         });
+        location.reload();
       })
       .catch((error) => {
         console.log(error);
@@ -33,7 +35,7 @@ const Register = () => {
 
   return (
     <div>
-      <div className=" w-[80%] mx-auto items-center justify-center">
+      <div className=" lg:w-[80%] mx-auto items-center justify-center">
         <div className=" lg:w-[50%] bg-orange-200 p-8  mx-auto text-gray-700 my-8 rounded-lg">
           <h2 className="text-center text-3xl font-bold">Please Register</h2>
 

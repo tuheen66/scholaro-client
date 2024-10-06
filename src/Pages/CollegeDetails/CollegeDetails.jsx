@@ -1,16 +1,11 @@
-import React from "react";
+
 import { useLoaderData } from "react-router-dom";
 
 import { Rating } from "@smastrom/react-rating";
 
 import "@smastrom/react-rating/style.css";
 
-import pic1 from "../../assets/images/basket_ball.png";
-import pic2 from "../../assets/images/cricket.png";
-import pic3 from "../../assets/images/atheletics.png";
-import pic4 from "../../assets/images/tech.png";
-import pic5 from "../../assets/images/culture.png";
-import pic6 from "../../assets/images/alumni.png";
+
 
 const CollegeDetails = () => {
   const colleges = useLoaderData();
@@ -29,6 +24,7 @@ const CollegeDetails = () => {
       <div className="flex justify-center">
         <Rating style={{ maxWidth: 300 }} value={colleges.rating} readOnly />
       </div>
+
       <section>
         <h2 className="text-xl font-bold text-center text-gray-700 my-4">
           Admission Process
@@ -45,7 +41,7 @@ const CollegeDetails = () => {
             {colleges.admission_dates.end}
           </h2>
         </div>
-        <div className="w-[60%] mx-auto ">
+        <div className="lg:w-[60%] mx-auto ">
           <div className="collapse collapse-arrow bg-base-200 mb-2">
             <input type="radio" name="my-accordion-2" defaultChecked />
             <div className="collapse-title text-xl font-medium text-left bg-gray-300">
@@ -117,8 +113,8 @@ const CollegeDetails = () => {
           </h2>
           <div>
             <h2 className="font-semibold mt-4">Research works :</h2>
-            {colleges.research_works.map((item) => (
-              <li>{item} </li>
+            {colleges.research_works.map((item, index) => (
+              <li key={index}>{item} </li>
             ))}
           </div>
         </div>
@@ -128,7 +124,7 @@ const CollegeDetails = () => {
         <h2 className="text-xl font-bold text-center text-gray-700 my-8">
           Upcoming Events
         </h2>
-        <div className="grid grid-cols-3 gap-8 ">
+        <div className="grid lg:grid-cols-3 gap-8 ">
           <div className="flex flex-col border-2 border-slate-400 rounded-lg p-4 bg-green-200 shadow-xl shadow-slate-600">
             <h2 className="text-lg font-semibold text-center">
               {Object.keys(colleges.event_details)[0]}
@@ -160,7 +156,7 @@ const CollegeDetails = () => {
         <h2 className="text-xl font-bold text-center text-gray-700 my-8">
           Sports Categories
         </h2>
-        <div className="grid grid-cols-3 gap-8 mb-8">
+        <div className="grid lg:grid-cols-3 gap-8 mb-8">
           <div className="flex flex-col border-2 border-slate-400 rounded-lg p-4 bg-blue-200 shadow-xl shadow-slate-600">
             <div className="w-16 mx-auto mb-2"></div>
             <h2 className="text-lg font-semibold text-center">

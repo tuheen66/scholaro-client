@@ -1,32 +1,24 @@
-import axios from "axios";
-import React, { useContext, useState } from "react";
+import { useContext } from "react";
+import { useLoaderData } from "react-router-dom";
 import { AuthContext } from "../../providers/AuthProvider";
-import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import Swal from "sweetalert2";
 
-const Admission = () => {
+const StudentProfile = () => {
+  const profile = useLoaderData();
+
   const { user } = useContext(AuthContext);
-
-  const [collegeName, setCollegeName] = useState("");
-  const [isVisible, setIsVisible] = useState(false);
-  const navigate = useNavigate();
-
-  console.log(user);
-
-  const handleCollege = (e) => {
-    setCollegeName(e.target.innerText);
-    setIsVisible(!isVisible);
-  };
-  console.log(collegeName);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const form = e.target;
+
     const candidate_name = form.candidate_name.value;
     const email = form.email.value;
     const subject = form.subject.value;
     const phone = form.phone.value;
     const address = form.address.value;
-    const dob = form.dob.value;
+
     const photo = form.photo.value;
 
     const studentInfo = {
@@ -35,17 +27,27 @@ const Admission = () => {
       subject,
       phone,
       address,
-      dob,
       photo,
-      collegeName,
     };
     console.log(studentInfo);
 
+    const id = profile._id;
+    console.log(id);
+
     axios
-      .post("http://localhost:5000/myCollege", studentInfo)
-      .then((res) => {
-        console.log(res.data);
-        navigate(`/my-college/${collegeName}`);
+      .put(`http://localhost:5000/myColleges/${id}`, studentInfo)
+      .then((result) => {
+        console.log(result.data);
+
+        if (result.data.modifiedCount > 0) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Update successful",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -53,50 +55,46 @@ const Admission = () => {
   };
 
   return (
-    <div className="mt-12">
-      <div className="grid md:grid-cols-3 gap-4">
-        <button
-          onClick={handleCollege}
-          className="bg-gray-400 px-4 py-2 rounded-lg font-bold"
-        >
-          Cedar Heights College
-        </button>
-        <button
-          onClick={handleCollege}
-          className="bg-gray-400 px-4 py-2 rounded-lg font-bold"
-        >
-          Maple Leaf College
-        </button>
-        <button
-          onClick={handleCollege}
-          className="bg-gray-400 px-4 py-2 rounded-lg font-bold"
-        >
-          Greenfield College of Arts and Sciences
-        </button>
-        <button
-          onClick={handleCollege}
-          className="bg-gray-400 px-4 py-2 rounded-lg font-bold"
-        >
-          Oakwood Business School
-        </button>
-        <button
-          onClick={handleCollege}
-          className="bg-gray-400 px-4 py-2 rounded-lg font-bold"
-        >
-          Riverdale University
-        </button>
-        <button
-          onClick={handleCollege}
-          className="bg-gray-400 px-4 py-2 rounded-lg font-bold"
-        >
-          Sunrise Institute of Technology
-        </button>
-      </div>
-
-      <div className={`my-8 ${isVisible ? "visible" : "invisible"}`}>
+    <div>
+      
+      <section>
+        <div className="md:flex justify-center space-x-20 mt-12">
+          <div className="w-56 ">
+            <img src={profile.photo} alt="" />
+          </div>
+          <div className="space-y-2">
+            <h2 className="font-bold text-xl">{profile.candidate_name}</h2>
+            <p>
+              <span className="font-semibold">Email : </span>
+              {profile.email}
+            </p>
+            <p>
+              <span className="font-semibold">Phone : </span>
+              {profile.phone}
+            </p>
+            <p>
+              <span className="font-semibold">Address : </span>
+              {profile.address}
+            </p>
+            <p>
+              <span className="font-semibold">Date of Birth : </span>
+              {profile.dob}
+            </p>
+            <p>
+              <span className="font-semibold">Subject : </span>
+              {profile.subject}
+            </p>
+            <p>
+              <span className="font-semibold">College : </span>
+              {profile.collegeName}
+            </p>
+          </div>
+        </div>
+      </section>
+      <div className="my-12">
         <form
           onSubmit={handleSubmit}
-          className=" mx-auto lg:w-2/3 bg-blue-300 p-4 rounded-lg"
+          className=" mx-auto w-2/3 bg-blue-300 p-4 rounded-lg"
         >
           <div className="flex items-center gap-8 w-full ">
             <div className="   w-1/2">
@@ -146,6 +144,7 @@ const Admission = () => {
               </label>
               <input
                 type="text"
+                defaultValue={profile.subject}
                 name="subject"
                 id="subject"
                 className="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
@@ -162,6 +161,7 @@ const Admission = () => {
               </label>
               <input
                 type="text"
+                defaultValue={profile.phone}
                 name="phone"
                 id="phone"
                 className="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
@@ -181,6 +181,7 @@ const Admission = () => {
               </label>
               <input
                 type="text"
+                defaultValue={profile.address}
                 name="address"
                 id="address"
                 className="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
@@ -197,6 +198,7 @@ const Admission = () => {
               </label>
               <input
                 type="date"
+                defaultValue={profile.dob}
                 name="dob"
                 id="dob"
                 className="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
@@ -223,18 +225,17 @@ const Admission = () => {
               required
             />
           </div>
-          {user && (
-            <button
-              type="submit"
-              className="btn  px-6 bg-[#d35400] text-white border-none   hover:bg-blue-600"
-            >
-              Submit
-            </button>
-          )}
+
+          <button
+            type="submit"
+            className="btn  px-6 bg-[#d35400] text-white border-none   hover:bg-blue-600"
+          >
+            Edit
+          </button>
         </form>
       </div>
     </div>
   );
 };
 
-export default Admission;
+export default StudentProfile;
